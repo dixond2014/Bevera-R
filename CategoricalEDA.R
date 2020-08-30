@@ -50,12 +50,12 @@ prop.table(tab_cnt,2)
 ggplot(df,aes(x=Zone,fill=State)) + geom_bar(position="fill") + ylab("proportion")
 
 ## 100% stacked bar chart, conditioned on State
-ggplot(df,aes(x=State,fill=Zone)) + geom_bar(position="fill") + ylab("proportion")
+ggplot(df,aes(x=State,fill=Zone)) + geom_bar(position="fill") + ylab("proportion")+ scale_fill_manual(values = c("Green", "Orange", "Red"))
 
 ## Rotates x labels by a 90 degree angle.
 ####***** They cannot space/enter here. otherwise an error will occur..
 ####***** It must all stay on one line.
-ggplot(df,aes(x=State,fill=Zone)) + geom_bar(position="fill") + ylab("proportion") + theme(axis.text.x = element_text(angle=90))
+ggplot(df,aes(x=State,fill=Zone)) + geom_bar(position="fill") + ylab("proportion")+ scale_fill_manual(values = c("Green", "Orange", "Red")) + theme(axis.text.x = element_text(angle=90))
 
 
 ## Contingency table of marginal distributions.
