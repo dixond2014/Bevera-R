@@ -1,0 +1,142 @@
+#Create a simple histogram using input vector, label, col and border parameters.
+#Create and save the histogram in the current R working directory.
+
+# Create data for the graph.
+v <-  c(9,13,21,8,36,22,12,41,31,33,19)
+
+Give the chart a file name.
+Create a histomer with an axis label. 
+Make the columns "yellow".
+Make the border color "blue"
+Save the file on your machine.
+
+
+Go back in create limits to the x-axis and y-axis.
+
+#Create a piechart using input vector, label, col and border parameters.
+#Create a Slice Percentages and Chart Legend
+We can add slice percentage and a chart legend by creating additional chart variables.
+
+# Create data for the graph. 
+x <- c(21, 62, 10,53) 
+labels <- c("London","New York","Singapore","Mumbai") 
+piepercent<- round(100*x/sum(x), 1) 
+
+# Give the chart file a name. 
+png(file = "city_percentage_legends.jpg") 
+# Plot the chart. 
+pie(x, labels = piepercent, main = "City pie chart",col = rainbow(length(x)))
+legend("topright", c("London","New York","Singapore","Mumbai"), cex = 0.8, fill = rainbow(length(x))) 
+# Save the file. dev.off()
+
+
+#histogram
+#The following code instructs R to randomly select a large sample of (n=1000000) values from a standard normal population 
+#and put ('assign') those values in a variable called 'y', then plot a histogram thereof.
+n = 1000000 # set the sample size
+p = runif(n) # randomly select n values of p
+y = qnorm(p) # give n standard normal quantiles
+hist(y) # do a histogram of y using R's defaults
+
+## collect the values together, and assign them to a variable called y
+c(6,10,10,17,7,12,7,11,6,16,3,8,13,8,7,12,6,5,10,9) -> y
+hist( y ) -> h # do a histogram of y and assign its info to h
+h$counts <- cumsum(h$counts) # replace the cell freq.s by cumulative freq.s
+plot( h ) # plot a cumulative histogram of y
+
+
+#Scatterplots
+# first we sample 3 different populations
+n1=200; y1=rnorm(n1,3,1)
+n2=100; y2=runif(n2,0,6)
+n3=50; y3=rlnorm(n3)/3
+
+
+#Univariate scatterplots 1
+#The following code takes a sample of n observations from a defined population (Y), 
+#and plots them as a simple (vertical) rugplot.
+n=100 # this defines the sample size
+# now we set up a small population of values
+Y=c(1,4,2,5,1,7,3,8,11,0,19)
+y=sample(Y,n,replace=TRUE) # then take a random sample
+
+# display the contents of y as a rugplot
+x=rep(1,n) # arbitrarily, set ALL x=1
+plot(x, y) # plot y against 1
+
+#Note that this graph represents (n=) 100 values - yet only 10 are visible on the plot. This is because y can only take the value of one of the ten discrete values given above.
+#Tied values are not distinguished.
+
+
+##Univariate scatterplots 2
+# arbitrarily set an x-value for each variable
+x1=rep(1,n1)
+x2=rep(2,n2)
+x3=rep(3,n3)
+# plot 3 univariate scatterplots (rugplots)
+plot(x1,y1, pch='-', xlim=range(x1,x2,x3), ylim=range(y1,y2,y3))
+points(x2,y2, pch='-', col='blue')
+points(x3,y3, pch='-', col='red')
+
+
+#Conventional dotplots
+#Dotplots, traditionally drawn with graphpaper and pen, used to be a popular way to display distributions of small, heavily tied, sets of values.
+#assigns some values to a variable (y), then plots a conventional dotplot, with duplicate values arranged evenly above
+y=c(445,530,540,510,570,530,545,545,505,535,450,500,
+520,460,430,520,520,430,535,535,475,545,420,495,
+485,570,480,495,470,490)
+
+x=rank(y,ties.method='first') - rank(y,ties.method='average')
+plot(y, x, ylab='')
+#Provided each value has an odd number of tied values the graph should be symmetrical about the x-axis, otherwise the result was 
+#arbitrarily assymetric - and for large sets of values, a tedious, untidy, and unsatisfactory affair.
+#Conventional dotplots display tied values one above the other. They are also known as univariate scatterplots, dot histograms 
+#or histogram-type dotplots, or (along with jittered dotplots) as density plots.
+
+
+#Cumulative rank scatterplots
+#If you wish to compare several samples containing unequal numbers of values it helps to standardize the ranks - most simply by converting to relative rank.
+# take THREE samples of ONE population:
+n1=30 ; y1=rnorm(n1) # this takes sample # 1
+n2=20 ; y2=rnorm(n2) # this takes sample # 2
+n3=10 ; y3=rnorm(n3) # this takes sample # 3
+
+n=n1 ; y=y1 # for sample #1
+p=rank(y,ties='random')/n # this ranks y
+plot(y, p) # plot p on y
+
+n=n2 ; y=y2 # for sample #2
+p=rank(y,ties='random')/n # this ranks y
+points(y, p,col='blue') # add this plot
+
+n=n3 ; y=y3 # for sample #3
+p=rank(y,ties='random')/n # this ranks y
+points(y, p, col='red') # add this plot
+
+#When relative rank is calculated in that way (p = r/n), for any given value, p is the proportion of values in y whose ranks are 
+#less than or equal to that value - hence ranking is a cumulative function (re-mapping).
+#These plots are also known as empirical distributions functions (ECDF), and to emphasize the fact they are unavoidably discrete, 
+#they are often plotted as stepplots. Plotting them as lineplots smooths the distribution to the eye, and makes them easier to compare, 
+#but implicitly assumes intermediate values could realistically be observed.
+
+
+#Q-Q plots
+n=30
+y1=rnorm(n) # sample #1
+y2=rnorm(n) # sample #2
+
+plot(sort(y1),sort(y2))
+# show expected relationship
+abline(0,1) # if Y1=Y2
+
+#If your samples are of unequal size, R's qqplot function can use interpolated values from the larger sample. 
+#So if y1 has 3000 values and y2 has 3 values, qqplot only produces 3 points.
+
+
+#Normal quantile plots
+#Because two-sample QQ plots are comparatively rare, most people assume QQ plots are only used to see if a set of values deviates 
+#from their expected ('theoretical') normal values. This type of plot is more correctly termed a normal quantile plot
+n=7; y=rnorm(n)
+# select n values from a normal population
+P=.5:n/n
+plot(qnorm(P), sort(y))
